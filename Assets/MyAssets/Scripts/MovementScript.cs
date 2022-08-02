@@ -8,7 +8,7 @@ public class MovementScript : MonoBehaviour
 
     
     public LayerMask whatIsWall;
-    public float wallrunForce,maxWallrunTime, maxWallSpeed;
+    public float wallrunForce,maxWallrunTime, maxWallSpeed, minWallSpeed;
     bool isWallRight, isWallLeft;
     bool isWallRunning;
     public float maxWallRunCameraTilt, wallRunCameraTilt;
@@ -23,8 +23,9 @@ public class MovementScript : MonoBehaviour
     {
         rb.useGravity = false;
         isWallRunning = true;
-        allowDashForceCounter = false;
-
+        
+       
+        
         if (rb.velocity.magnitude <= maxWallSpeed)
         {
             rb.AddForce(orientation.forward * wallrunForce * Time.deltaTime);
@@ -35,6 +36,15 @@ public class MovementScript : MonoBehaviour
             else
                 rb.AddForce(-orientation.right * wallrunForce / 5 * Time.deltaTime);
         }
+        if (rb.velocity.magnitude <= minWallSpeed)
+        {
+            if (isWallRight)
+                rb.AddForce(-orientation.right * wallrunForce * Time.deltaTime *2f);
+            else 
+                rb.AddForce(orientation.right * wallrunForce * Time.deltaTime *2f );
+
+
+         }
     }
     private void StopWallRun()
     {
@@ -64,13 +74,19 @@ public class MovementScript : MonoBehaviour
     private Rigidbody rb;
 
    
+
+   
     private float xRotation;
-    public float sensitivity = 50f;
+    public float sensitivity = 75f;
+   
+    
     private float sensMultiplier = 1f;
 
     
+
     public float moveSpeed = 4500;
     public float maxSpeed = 20;
+    
     private float startMaxSpeed;
     public bool grounded;
     public LayerMask whatIsGround;
@@ -82,10 +98,12 @@ public class MovementScript : MonoBehaviour
     
     private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
     private Vector3 playerScale;
+    public float currentSpeed;
+    private Vector3 lastPosition;
     public float slideForce = 400;
     public float slideCounterMovement = 0.2f;
     public float crouchGravityMultiplier;
-
+    
     
     private bool readyToJump = true;
     private float jumpCooldown = 0.25f;
@@ -99,39 +117,20 @@ public class MovementScript : MonoBehaviour
     bool jumping, sprinting, crouching;
 
     
-    public float dashForce;
-    public float dashCooldown;
-    public float dashTime;
-    bool allowDashForceCounter;
-    bool readyToDash;
-    int wTapTimes = 0;
-    Vector3 dashStartVector;
+    
 
-    public float maxRocketTime;
-    public float rocketForce;
-    bool rocketActive, readyToRocket;
-    bool alreadyInvokedRockedStop;
-    float rocketTimer;
 
     
     private Vector3 normalVector = Vector3.up;
 
     
-    public float maxSonicSpeed;
-    public float sonicSpeedForce;
-    public float timeBetweenNextSonicBoost;
-    float timePassedSonic;
+    
 
     
-    public float flashCooldown, flashRange;
-    public int maxFlashesLeft;
-    bool alreadySubtractedFlash;
-    public int flashesLeft = 3;
+   
 
     
-    public float climbForce, maxClimbSpeed;
-    public LayerMask whatIsLadder;
-    bool alreadyStoppedAtLadder;
+  
 
     void Awake()
     {
@@ -150,6 +149,8 @@ public class MovementScript : MonoBehaviour
     private void FixedUpdate()
     {
         Movement();
+        currentSpeed = (transform.position - lastPosition).magnitude;
+        lastPosition = transform.position;
     }
 
     private void Update()
@@ -157,7 +158,6 @@ public class MovementScript : MonoBehaviour
         MyInput();
         Look();
         CheckForWall();
-        SonicSpeed();
         WallRunInput();
     }
 
@@ -181,37 +181,11 @@ public class MovementScript : MonoBehaviour
             doubleJumpsLeft--;
         }
 
-
-        if (Input.GetKeyDown(KeyCode.W) && wTapTimes <= 1)
-        {
-            wTapTimes++;
-            Invoke("ResetTapTimes", 0.3f);
-        }
-        if (wTapTimes == 2 && readyToDash) Dash();
-
-       
-        if (Input.GetKeyDown(KeyCode.Mouse1) && flashesLeft > 0 && x > 0) SideFlash(true);
-        if (Input.GetKeyDown(KeyCode.Mouse1) && flashesLeft > 0 && x < 0) SideFlash(false);
-
      
-        if (Input.GetKeyDown(KeyCode.LeftControl) && readyToRocket)
-        {
-            
-            rb.velocity = rb.velocity / 3;
-        }
-        if (Input.GetKey(KeyCode.LeftControl) && readyToRocket)
-            StartRocketBoost();
-
-        
-        if (Physics.Raycast(transform.position, orientation.forward, 1, whatIsLadder) && y > .9f)
-            Climb();
-        else alreadyStoppedAtLadder = false;
     }
+    
 
-    private void ResetTapTimes()
-    {
-        wTapTimes = 0;
-    }
+   
 
     private void StartCrouch()
     {
@@ -235,7 +209,7 @@ public class MovementScript : MonoBehaviour
     private void Movement()
     {
         
-        float gravityMultiplier = 10f;
+        float gravityMultiplier = 20f;
 
         if (crouching) gravityMultiplier = crouchGravityMultiplier;
 
@@ -247,12 +221,10 @@ public class MovementScript : MonoBehaviour
 
         CounterMovement(x, y, mag);
 
-        if (readyToJump && jumping && grounded && !rocketActive) Jump();
+        if (readyToJump && jumping && grounded) Jump();
 
         if (grounded)
         {
-            readyToDash = true;
-            readyToRocket = true;
             doubleJumpsLeft = startDoubleJumps;
         }
 
@@ -317,7 +289,7 @@ public class MovementScript : MonoBehaviour
             rb.velocity = Vector3.zero;
 
            
-            allowDashForceCounter = false;
+           
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
@@ -330,7 +302,7 @@ public class MovementScript : MonoBehaviour
             
             if (isWallLeft && !Input.GetKey(KeyCode.D) || isWallRight && !Input.GetKey(KeyCode.A))
             {
-                rb.AddForce(Vector2.up * jumpForce * 1.5f);
+                rb.AddForce(Vector2.up * jumpForce * 0.5f);
                 rb.AddForce(normalVector * jumpForce * 0.5f);
             }
 
@@ -338,9 +310,9 @@ public class MovementScript : MonoBehaviour
             if (isWallRight && Input.GetKey(KeyCode.A)) rb.AddForce(-orientation.right * jumpForce * 3.2f);
             if (isWallLeft && Input.GetKey(KeyCode.D)) rb.AddForce(orientation.right * jumpForce * 3.2f);
 
-            rb.AddForce(orientation.forward * jumpForce * 1f);
+            rb.AddForce(orientation.forward * jumpForce * 2.5f);
 
-            allowDashForceCounter = false;
+
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
@@ -351,144 +323,10 @@ public class MovementScript : MonoBehaviour
         readyToJump = true;
     }
 
-    private void Dash()
-    {
-        dashStartVector = orientation.forward;
-
-        allowDashForceCounter = true;
-
-        readyToDash = false;
-        wTapTimes = 0;
-
-        rb.useGravity = false;
-
-        rb.velocity = Vector3.zero;
-        rb.AddForce(orientation.forward * dashForce);
-
-        Invoke("ActivateGravity", dashTime);
-    }
-    private void ActivateGravity()
-    {
-        rb.useGravity = true;
-
-        if (allowDashForceCounter)
-        {
-            rb.AddForce(dashStartVector * -dashForce * 0.5f);
-        }
-    }
-    private void SonicSpeed()
-    {
-        if (grounded && y >= 0.99f)
-        {
-            timePassedSonic += Time.deltaTime;
-        }
-        else
-        {
-            timePassedSonic = 0;
-            maxSpeed = startMaxSpeed;
-        }
-
-        if (timePassedSonic >= timeBetweenNextSonicBoost)
-        {
-            if (maxSpeed <= maxSonicSpeed)
-            {
-                maxSpeed += 5;
-                rb.AddForce(orientation.forward * Time.deltaTime * sonicSpeedForce);
-            }
-            timePassedSonic = 0;
-        }
-    }
-    private void SideFlash(bool isRight)
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(orientation.position, orientation.right, out hit, flashRange) && isRight)
-        {
-            transform.position = hit.point;
-        }
-        else if (!Physics.Raycast(orientation.position, orientation.right, out hit, flashRange) && isRight)
-            transform.position = new Vector3(transform.position.x + flashRange, transform.position.y, transform.position.z);
-
-        if (Physics.Raycast(orientation.position, -orientation.right, out hit, flashRange) && !isRight)
-        {
-            transform.position = hit.point;
-        }
-        else if (!Physics.Raycast(orientation.position, -orientation.right, out hit, flashRange) && !isRight)
-            transform.position = new Vector3(transform.position.x - flashRange, transform.position.y, transform.position.z);
-
-        Vector3 vel = rb.velocity;
-        if (rb.velocity.y < 0.5f && !alreadyStoppedAtLadder)
-        {
-            rb.velocity = new Vector3(vel.x, 0, vel.z);
-        }
-
-        flashesLeft--;
-        if (!alreadySubtractedFlash)
-        {
-            Invoke("ResetFlash", flashCooldown);
-            alreadySubtractedFlash = true;
-        }
-    }
-    private void ResetFlash()
-    {
-        alreadySubtractedFlash = false;
-        Invoke("ResetFlash", flashCooldown);
-
-        if (flashesLeft < maxFlashesLeft)
-            flashesLeft++;
-    }
-    private void StartRocketBoost()
-    {
-        if (!alreadyInvokedRockedStop)
-        {
-            Invoke("StopRocketBoost", maxRocketTime);
-            alreadyInvokedRockedStop = true;
-        }
-
-        rocketTimer += Time.deltaTime;
-
-        rocketActive = true;
-
-        allowDashForceCounter = false;
-
-       
-        rb.AddForce(orientation.forward * rocketForce * Time.deltaTime * 1f);
-        rb.AddForce(Vector3.up * rocketForce * Time.deltaTime * 2f);
-
-    }
-    private void StopRocketBoost()
-    {
-        alreadyInvokedRockedStop = false;
-        rocketActive = false;
-        readyToRocket = false;
-
-        if (rocketTimer >= maxRocketTime - 0.2f)
-        {
-            rb.AddForce(orientation.forward * rocketForce * -.2f);
-            rb.AddForce(Vector3.up * rocketForce * -.4f);
-        }
-        else
-        {
-            rb.AddForce(orientation.forward * rocketForce * -.2f * rocketTimer);
-            rb.AddForce(Vector3.up * rocketForce * -.4f * rocketTimer);
-        }
-
-        rocketTimer = 0;
-    }
-    private void Climb()
-    {
-        Vector3 vel = rb.velocity;
-        if (rb.velocity.y < 0.5f && !alreadyStoppedAtLadder)
-        {
-            rb.velocity = new Vector3(vel.x, 0, vel.z);
-            alreadyStoppedAtLadder = true;
-            rb.AddForce(orientation.forward * 500 * Time.deltaTime);
-        }
-
-        if (rb.velocity.magnitude < maxClimbSpeed)
-            rb.AddForce(orientation.up * climbForce * Time.deltaTime);
-
-        if (!Input.GetKey(KeyCode.S)) y = 0;
-    }
+   
+   
+    
+    
 
     private float desiredX;
     private void Look()

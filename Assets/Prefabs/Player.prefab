@@ -61,7 +61,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3001468016356073197}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.2, y: 0.15, z: -4.34}
+  m_LocalPosition: {x: 0.2, y: 3.2, z: -4.34}
   m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_Children:
   - {fileID: 5104430214509314674}
@@ -161,14 +161,16 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 512
-  wallrunForce: 3000
-  maxWallrunTime: 2
+  wallrunForce: 2000
+  maxWallrunTime: 0.001
   maxWallSpeed: 30
+  minWallSpeed: 10
   maxWallRunCameraTilt: 15
   wallRunCameraTilt: 0
   playerCam: {fileID: 0}
   orientation: {fileID: 5104430214509314674}
-  moveSpeed: 4500
+  sensitivity: 75
+  moveSpeed: 3500
   maxSpeed: 20
   grounded: 0
   whatIsGround:
@@ -176,30 +178,14 @@ MonoBehaviour:
     m_Bits: 256
   counterMovement: 0.175
   maxSlopeAngle: 35
+  currentSpeed: 0
   slideForce: 2000
   slideCounterMovement: 0.2
   crouchGravityMultiplier: 0
-  jumpForce: 550
+  jumpForce: 450
   startDoubleJumps: 1
   x: 0
   y: 0
-  dashForce: 0
-  dashCooldown: 0
-  dashTime: 0
-  maxRocketTime: 0
-  rocketForce: 0
-  maxSonicSpeed: 0
-  sonicSpeedForce: 0
-  timeBetweenNextSonicBoost: 0
-  flashCooldown: 0
-  flashRange: 0
-  maxFlashesLeft: 0
-  flashesLeft: 3
-  climbForce: 1500
-  maxClimbSpeed: 15
-  whatIsLadder:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!114 &5578774833279613719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: 100
+  HPDisplay: {fileID: 0}
   player: {fileID: 3001468015780279526}
   respawnPoint: {fileID: 0}
 --- !u!1 &5245636902433288081

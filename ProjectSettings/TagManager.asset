@@ -8,6 +8,10 @@ TagManager:
   - Laser
   - Teleporter
   - DroneBullet
+  - FxTemporaire
+  - Explosive
+  - Screen
+  - ExplosiveBH
   layers:
   - Default
   - TransparentFX

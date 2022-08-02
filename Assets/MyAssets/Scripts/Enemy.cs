@@ -29,6 +29,10 @@ public class Enemy : MonoBehaviour
         {
             Die();
         }
+        if (other.gameObject.tag == "Explosive")
+        {
+            Die();
+        }
     }
 
     void Die()
@@ -36,6 +40,7 @@ public class Enemy : MonoBehaviour
         this.GetComponent<Rigidbody>().useGravity = true;
         isDead = true;
         GetComponent<EnemyController>().enabled = false;
+        GetComponent<NewBehaviourScript>().enabled = false;
         GetComponent<Enemy>().enabled = false;
         ThrusterL.SetActive(false);
         ThrusterR.SetActive(false);

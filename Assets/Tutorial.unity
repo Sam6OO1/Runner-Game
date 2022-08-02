@@ -1755,7 +1755,7 @@ MonoBehaviour:
   isDead: 0
   ThrusterL: {fileID: 661404725}
   ThrusterR: {fileID: 1027951443}
-  Eye: {fileID: 0}
+  Eye: {fileID: 786350308}
   target: {fileID: 1724935004}
   speed: 2.5
 --- !u!114 &166219307
@@ -25152,6 +25152,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2690052670257839089, guid: c9c63b6fed567c74392119401986fdf4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2690052670257839089, guid: c9c63b6fed567c74392119401986fdf4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2690052670257839089, guid: c9c63b6fed567c74392119401986fdf4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -23.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2690052671117492039, guid: c9c63b6fed567c74392119401986fdf4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25307,21 +25322,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 2690052670257839089, guid: c9c63b6fed567c74392119401986fdf4,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 10.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2690052670257839089, guid: c9c63b6fed567c74392119401986fdf4,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2690052670257839089, guid: c9c63b6fed567c74392119401986fdf4,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -23.7
       objectReference: {fileID: 0}
     - target: {fileID: 8872924577280474616, guid: c9c63b6fed567c74392119401986fdf4,
         type: 3}
@@ -42917,7 +42917,7 @@ MonoBehaviour:
   isDead: 0
   ThrusterL: {fileID: 208446371}
   ThrusterR: {fileID: 1402833868}
-  Eye: {fileID: 0}
+  Eye: {fileID: 2075226755}
   target: {fileID: 0}
   speed: 5
 --- !u!114 &1669991848
@@ -51816,7 +51816,7 @@ MonoBehaviour:
   isDead: 0
   ThrusterL: {fileID: 1431763973}
   ThrusterR: {fileID: 1394808536}
-  Eye: {fileID: 0}
+  Eye: {fileID: 1949367224}
   target: {fileID: 1724935004}
   speed: 2.5
 --- !u!114 &1759924551
@@ -64536,6 +64536,11 @@ PrefabInstance:
       propertyPath: playerCam
       value: 
       objectReference: {fileID: 1237577920}
+    - target: {fileID: 2468262583173825482, guid: c8eb96f075d6ed548999e9d5383ee11a,
+        type: 3}
+      propertyPath: wallrunForce
+      value: 2000
+      objectReference: {fileID: 0}
     - target: {fileID: 5578774833279613719, guid: c8eb96f075d6ed548999e9d5383ee11a,
         type: 3}
       propertyPath: respawnPoint
@@ -64703,11 +64708,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pause
       objectReference: {fileID: 0}
-    - target: {fileID: 7775045151299651568, guid: c3374bd82570db74ebd6d96040d738bf,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7775045151709986684, guid: c3374bd82570db74ebd6d96040d738bf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -64811,6 +64811,11 @@ PrefabInstance:
     - target: {fileID: 7775045151709986684, guid: c3374bd82570db74ebd6d96040d738bf,
         type: 3}
       propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775045151299651568, guid: c3374bd82570db74ebd6d96040d738bf,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7775045151299651570, guid: c3374bd82570db74ebd6d96040d738bf,
@@ -64993,5 +64998,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9186897612142407221, guid: 5c9b715210ac628418c6e0afd3aff453,
+        type: 3}
+      propertyPath: Eye
+      value: 
+      objectReference: {fileID: 9186897612962981214}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c9b715210ac628418c6e0afd3aff453, type: 3}
+--- !u!1 &9186897612962981214 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9186897612141057223, guid: 5c9b715210ac628418c6e0afd3aff453,
+    type: 3}
+  m_PrefabInstance: {fileID: 9186897612962981213}
+  m_PrefabAsset: {fileID: 0}

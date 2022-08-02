@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 
@@ -9,6 +10,7 @@ public class damagePlayer : MonoBehaviour
 {
     public int playerHealth = 100;
     int damage = 20;
+    public Text HPDisplay;
     [SerializeField] private Transform player;
 
     [SerializeField] private Transform respawnPoint;
@@ -24,6 +26,12 @@ public class damagePlayer : MonoBehaviour
         {
             playerHealth -= damage;
             print(playerHealth);
+            HPDisplay.text = "HP:" + playerHealth.ToString();
+        }
+        if (other.gameObject.tag == "Explosive")
+        {
+            playerHealth = 0;
+            
         }
     }
 
