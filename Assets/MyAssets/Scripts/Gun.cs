@@ -6,6 +6,7 @@ using System.Globalization;
 
 public class Gun : MonoBehaviour
 {
+    public AudioSource gunSound;
     public float damage = 10f;
     public float range = 100f;
     public float fireRate = 15f;
@@ -84,7 +85,7 @@ public class Gun : MonoBehaviour
 
     void Shoot()
     {
-
+        gunSound.Play();
         muzzleFlash.Play();
         currentAmmo--;
         
