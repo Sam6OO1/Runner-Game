@@ -34,6 +34,13 @@ public class Enemy : MonoBehaviour
             Die();
         }
     }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Explosive")
+        {
+            Die();
+        }
+    }
 
     void Die()
     {
