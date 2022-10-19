@@ -11,3 +11,5 @@ Left Click - Fire
 Right Click - Slow time
 ESC - Pause
 F - Interact
+
+Runs of Unity Version: 2019.2.13f1
